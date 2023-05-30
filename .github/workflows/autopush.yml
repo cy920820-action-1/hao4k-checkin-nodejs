@@ -1,6 +1,12 @@
 name: Auto Push File
 
 on:
+  workflow_dispatch: 
+    # 可以进行配置手动触发后有选项进行触发
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   schedule:
     - cron: '0 0 */30 * *' # 每30天自动运行一次
 
@@ -25,4 +31,4 @@ jobs:
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.AUTOPUSH_TOKEN }}
