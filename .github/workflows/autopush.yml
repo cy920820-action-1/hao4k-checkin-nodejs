@@ -1,0 +1,28 @@
+name: Auto Push File
+
+on:
+  schedule:
+    - cron: '0 0 */30 * *' # 每30天自动运行一次
+
+jobs:
+  push_file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Update File
+        run: |
+          # 获取当前时间戳
+          timestamp=$(date +%s)
+          # 更新文件的内容
+          echo "This is an updated content. Timestamp: ${timestamp}" >> file.txt
+      - name: Commit Files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add file.txt
+          git commit -m "Auto update file.txt"
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
